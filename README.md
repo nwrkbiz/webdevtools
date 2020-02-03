@@ -4,7 +4,7 @@ Web Dev Tools
 Simple program to ease web development.
 
 Includes following features:
-* Webserver allows serving files via http
+* Webserver, allows serving files via http
 * Websocket server, allows receiving and answering to text messages (useful for protocol prototyping).
 * Websocket client, allows sending custom messages (useful for protocol prototyping).
 
