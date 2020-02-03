@@ -11,6 +11,7 @@
 #include <FL/fl_ask.H>
 #include <FL/Fl_File_Chooser.H>
 #include <FL/Fl_PNG_Image.H>
+#include <Blob.h>
 
 using namespace giri;
 
@@ -34,7 +35,9 @@ View::View(){
 #ifdef _WIN32
     win_main->icon((char*)LoadIcon(fl_display, MAKEINTRESOURCE(101)));
 #else
-    Fl_PNG_Image win_icon("Icon.png");
+    Blob b;
+    b.loadBase64(m_Icon);
+    Fl_PNG_Image win_icon("Icon.png", (unsigned char*)b.data(), b.size());
     win_main->icon(&win_icon);
 #endif /*_WIN32*/
 
