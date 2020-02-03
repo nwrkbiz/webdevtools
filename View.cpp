@@ -94,6 +94,7 @@ void View::update(giri::WebSocketSession::SPtr sess){
     std::unique_lock<std::mutex> lck(m_SendMtx);
     m_WSS_RCV->text(sess->getMessage().c_str());
     win_main->redraw();
+    Fl::check();
     m_Send.wait(lck);
     std::string msg(m_WSS_SND->text());
     sess->send(msg);
@@ -101,6 +102,7 @@ void View::update(giri::WebSocketSession::SPtr sess){
 void View::update(giri::WebSocketClient::SPtr clnt){
     m_WSC_RCV->text(clnt->getMessage().c_str());
     win_main->redraw();
+    Fl::check();
 }
 std::string View::getFolder(){
     Fl_File_Chooser chooser(".",
