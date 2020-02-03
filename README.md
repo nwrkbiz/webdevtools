@@ -1,7 +1,7 @@
 Web Dev Tools
 =============
 
-Simple program to ease web development.
+Simple platform independent GUI program to ease web development.
 
 Includes following features:
 * Webserver, allows serving files via http
