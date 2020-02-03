@@ -1,0 +1,288 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0304
+header_name {.h}
+code_name {.cxx}
+declblock {\#include <FL/fl_draw.H>} {open public after {\#include <FL/Fl_Table_Row.H>}
+} {}
+
+declblock {\#include <string>} {open public after {\#include <vector>}
+} {}
+
+class SimpleTable {: {public Fl_Table_Row}
+} {
+  Function {draw_cell(TableContext context, int R=0, int C=0, int X=0, int Y=0, int W=0, int H=0)} {return_type void
+  } {
+    code {static char s[40];
+    switch ( context ) {
+      case CONTEXT_STARTPAGE:                   // before page is drawn..
+        fl_font(FL_HELVETICA, 16);              // set the font for our drawing operations
+        return; 
+      case CONTEXT_COL_HEADER:                  // Draw column headers
+        sprintf(s,"%c",'A'+C);                // "A", "B", "C", etc.
+        DrawHeader(s,X,Y,W,H);
+        return; 
+      case CONTEXT_ROW_HEADER:                  // Draw row headers
+        sprintf(s,"%02d:",R);                 // "001:", "002:", etc
+        DrawHeader(s,X,Y,W,H);
+        return; 
+      case CONTEXT_CELL:                        // Draw data in cells
+      	if((int)m_TableData.size()-1 < R)
+      		SetTableData("", 0, R);
+      	
+      	if((int)m_TableData.at(R).size()-1 < C)
+      		SetTableData("", C, 0);
+      				
+        DrawData(m_TableData.at(R).at(C).c_str(),
+                 m_CellColors.at(R).at(C),X,Y,W,H);
+        return;
+      default:
+        return;
+ }} {}
+  }
+  Function {SimpleTable(int x, int y, int w, int h, const char *l = 0) : Fl_Table_Row(x,y,w,h,l)} {} {
+    code {} {}
+  }
+  Function {SetTableData(std::string data, unsigned int x = 0, unsigned int y = 0, Fl_Color color = FL_WHITE)} {return_type void
+  } {
+    code {if(m_TableData.empty() || (m_TableData.size() < y+1))
+{
+    m_TableData.resize(y+1);
+    rows(y+1);
+}
+
+for (unsigned int i = 0; i < m_TableData.size(); ++i)
+    if(m_TableData.at(i).empty() || 
+      (m_TableData.at(i).size() < x+1))
+    {
+        m_TableData.at(i).resize(x+1, "");   
+        cols(x+1);
+    }   
+
+m_TableData.at(y).at(x) = data;
+SetCellColor(color,x,y);} {}
+  }
+  Function {SetCellColor(Fl_Color color, unsigned int x = 0, unsigned int y = 0)} {return_type void
+  } {
+    code {if(m_CellColors.empty() || (m_CellColors.size() < y+1))
+{
+    m_CellColors.resize(y+1);
+    rows(y+1);
+}
+
+for (unsigned int i = 0; i < m_CellColors.size(); ++i)
+    if(m_CellColors.at(i).empty() || 
+      (m_CellColors.at(i).size() < x+1))
+    {
+        m_CellColors.at(i).resize(x+1, FL_WHITE);   
+        cols(x+1);
+    }   
+
+m_CellColors.at(y).at(x) = color;} {}
+  }
+  Function {GetTableData()} {return_type {std::vector<std::vector<std::string>>}
+  } {
+    code {return m_TableData;} {}
+  }
+  Function {Resize(unsigned int x = 0, unsigned int y = 0)} {} {
+    code {m_TableData.resize(y+1);
+m_CellColors.resize(y+1);
+rows(y+1);
+for (unsigned int i = 0; i < m_TableData.size(); ++i)
+{
+    m_CellColors.at(i).resize(x+1, FL_WHITE);
+    m_TableData.at(i).resize(x+1, "");   
+}       
+cols(x+1);} {}
+  }
+  decl {using TableData = std::vector<std::vector<std::string>>;} {public local
+  }
+  decl {using TableCellColors = std::vector<std::vector<Fl_Color>>;} {public local
+  }
+  Function {DrawData(const char *s, Fl_Color cell_color, int X, int Y, int W, int H)} {private return_type void
+  } {
+    code {fl_push_clip(X,Y,W,H);
+      // Draw cell bg
+      fl_color(cell_color); fl_rectf(X,Y,W,H);
+      // Draw cell data
+      fl_color(FL_GRAY0); fl_draw(s, X,Y,W,H, FL_ALIGN_CENTER);
+      // Draw box border
+      fl_color(color()); fl_rect(X,Y,W,H);
+fl_pop_clip();} {}
+  }
+  Function {DrawHeader(const char *s, int X, int Y, int W, int H)} {private return_type void
+  } {
+    code {fl_push_clip(X,Y,W,H);
+      fl_draw_box(FL_THIN_UP_BOX, X,Y,W,H, row_header_color());
+      fl_color(FL_BLACK);
+      fl_draw(s, X,Y,W,H, FL_ALIGN_CENTER);
+fl_pop_clip();} {}
+  }
+  decl {TableData m_TableData;} {private local
+  }
+  decl {TableCellColors m_CellColors;} {private local
+  }
+}
+
+class ViewFluid {open
+} {
+  Function {ViewFluid()} {open protected
+  } {
+    Fl_Window win_main {
+      label {Web Tools} open
+      protected xywh {802 212 490 520} type Double box GTK_DOWN_BOX hotspot size_range {585 555 0 0} visible
+    } {
+      Fl_Tabs {} {open
+        protected xywh {0 0 490 520}
+      } {
+        Fl_Group {} {
+          label HTTPServer selected
+          protected xywh {0 25 490 495}
+        } {
+          Fl_Input ti_http_addr {
+            label {Bind Address:}
+            protected xywh {135 95 165 30}
+          }
+          Fl_Value_Input vi_http_port {
+            label {Port:}
+            protected xywh {345 95 90 30}
+          }
+          Fl_File_Input ti_http_folder {
+            label {Root directory:}
+            protected xywh {135 135 240 35}
+          }
+          Fl_Button btn_http_folder {
+            label Select
+            protected xywh {375 135 60 35}
+          }
+          Fl_Value_Input vi_http_threads {
+            label {Threads:}
+            protected xywh {135 220 90 30}
+          }
+          Fl_Check_Button chb_http_ssl {
+            label {Use SSL}
+            protected xywh {360 220 25 25} down_box DOWN_BOX
+          }
+          Fl_File_Input ti_http_certificate {
+            label {Certificate:}
+            protected xywh {135 260 240 35} deactivate
+          }
+          Fl_Button btn_http_certificate {
+            label Select
+            protected xywh {375 260 60 35} deactivate
+          }
+          Fl_File_Input ti_http_certkey {
+            label {Key:}
+            protected xywh {135 310 240 35} deactivate resizable
+          }
+          Fl_Button btn_http_certkey {
+            label Select
+            protected xywh {375 310 60 35} deactivate
+          }
+          Fl_Return_Button btn_http_start {
+            label Start
+            protected xywh {155 380 180 30}
+          }
+        }
+        Fl_Group {} {
+          label {Websocket Server} open
+          protected xywh {0 25 490 495} hide
+        } {
+          Fl_Input ti_wss_addr {
+            label {Bind Address:}
+            protected xywh {135 40 165 30}
+          }
+          Fl_Value_Input vi_wss_port {
+            label {Port:}
+            protected xywh {345 40 90 30}
+          }
+          Fl_Value_Input vi_wss_threads {
+            label {Threads:}
+            protected xywh {135 75 90 30}
+          }
+          Fl_Check_Button chb_wss_ssl {
+            label {Use SSL}
+            protected xywh {345 75 25 25} down_box DOWN_BOX
+          }
+          Fl_File_Input ti_wss_certificate {
+            label {Certificate:}
+            protected xywh {135 115 240 35} deactivate
+          }
+          Fl_Button btn_wss_certificate {
+            label Select
+            protected xywh {375 115 60 35} deactivate
+          }
+          Fl_File_Input ti_wss_certkey {
+            label {Key:}
+            protected xywh {135 165 240 35} deactivate resizable
+          }
+          Fl_Button btn_wss_certkey {
+            label Select
+            protected xywh {375 165 60 35} deactivate
+          }
+          Fl_Button btn_wss_start {
+            label Start
+            protected xywh {160 210 180 30}
+          }
+          Fl_Text_Editor te_wss_rcv {
+            label {Received:}
+            protected xywh {10 270 230 190} deactivate
+          }
+          Fl_Text_Editor te_wss_snd {
+            label {Answer:}
+            protected xywh {250 270 230 190} deactivate
+          }
+          Fl_Return_Button btn_wss_send {
+            label Send
+            protected xywh {155 480 180 30} deactivate
+          }
+        }
+        Fl_Group {} {
+          label {Websocket Client} open
+          protected xywh {0 25 490 495} hide
+        } {
+          Fl_Input ti_wsc_addr {
+            label {Bind Address:}
+            protected xywh {145 50 165 30}
+          }
+          Fl_Value_Input vi_wsc_port {
+            label {Port:}
+            protected xywh {355 50 90 30}
+          }
+          Fl_Value_Input vi_wsc_threads {
+            label {Threads:}
+            protected xywh {145 85 90 30}
+          }
+          Fl_Check_Button chb_wsc_ssl {
+            label {Use SSL}
+            protected xywh {355 85 25 25} down_box DOWN_BOX
+          }
+          Fl_Button btn_wsc_start {
+            label Start
+            protected xywh {165 130 180 30}
+          }
+          Fl_Text_Editor te_wsc_snd {
+            label {Send:}
+            protected xywh {5 190 240 245} deactivate
+          }
+          Fl_Text_Editor te_wsc_rcv {
+            label {Received:}
+            protected xywh {250 190 230 245} deactivate
+          }
+          Fl_Return_Button btn_wsc_send {
+            label Send
+            protected xywh {165 455 180 30} deactivate
+          }
+        }
+        Fl_Group {} {
+          label About
+          protected xywh {0 25 490 495} hide
+        } {
+          Fl_Box box_about {
+            label {Daniel Giritzer}
+            protected xywh {5 25 480 495}
+          }
+        }
+      }
+    }
+  }
+}
