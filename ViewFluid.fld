@@ -128,14 +128,14 @@ class ViewFluid {open
   Function {ViewFluid()} {open protected
   } {
     Fl_Window win_main {
-      label {Web Tools} open
-      protected xywh {802 212 490 520} type Double box GTK_DOWN_BOX hotspot size_range {585 555 0 0} visible
+      label {Web Tools}
+      protected xywh {994 363 490 520} type Double box GTK_DOWN_BOX visible
     } {
       Fl_Tabs {} {open
         protected xywh {0 0 490 520}
       } {
         Fl_Group {} {
-          label HTTPServer selected
+          label HTTPServer open
           protected xywh {0 25 490 495}
         } {
           Fl_Input ti_http_addr {

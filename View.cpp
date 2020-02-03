@@ -148,6 +148,8 @@ void View::btn_http_start_cb(Fl_Button* btn, void* view)
         me->vi_http_port->deactivate();
         me->vi_http_threads->deactivate();
         me->btn_http_start->deactivate();
+        me->btn_http_folder->deactivate();
+        me->ti_http_folder->deactivate();
     }
     catch(const ExceptionBase &e)
     {

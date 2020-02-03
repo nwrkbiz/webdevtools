@@ -114,7 +114,6 @@ ViewFluid::ViewFluid() {
   { win_main = new Fl_Double_Window(490, 520, "Web Tools");
     win_main->box(FL_GTK_DOWN_BOX);
     win_main->user_data((void*)(this));
-    win_main->hotspot(win_main);
     { Fl_Tabs* o = new Fl_Tabs(0, 0, 490, 520);
       { Fl_Group* o = new Fl_Group(0, 25, 490, 495, "HTTPServer");
         { ti_http_addr = new Fl_Input(135, 95, 165, 30, "Bind Address:");
@@ -216,7 +215,6 @@ ViewFluid::ViewFluid() {
       } // Fl_Group* o
       o->end();
     } // Fl_Tabs* o
-    win_main->size_range(585, 555);
     win_main->end();
   } // Fl_Double_Window* win_main
 }
