@@ -1,5 +1,5 @@
 # data file for the Fltk User Interface Designer (fluid)
-version 1.0304
+version 1.0305
 header_name {.h}
 code_name {.cxx}
 declblock {\#include <FL/fl_draw.H>} {open public after {\#include <FL/Fl_Table_Row.H>}
@@ -128,59 +128,63 @@ class ViewFluid {open
   Function {ViewFluid()} {open protected
   } {
     Fl_Window win_main {
-      label {Web Tools}
-      protected xywh {994 363 490 520} type Double box GTK_DOWN_BOX visible
+      label {Web Tools} open
+      protected xywh {795 82 490 520} type Double box GTK_DOWN_BOX visible
     } {
       Fl_Tabs {} {open
         protected xywh {0 0 490 520}
       } {
         Fl_Group {} {
-          label HTTPServer open
+          label HTTPServer open selected
           protected xywh {0 25 490 495}
         } {
           Fl_Input ti_http_addr {
             label {Bind Address:}
-            protected xywh {135 95 165 30}
+            protected xywh {135 40 165 30}
           }
           Fl_Value_Input vi_http_port {
             label {Port:}
-            protected xywh {345 95 90 30}
+            protected xywh {345 40 90 30}
           }
           Fl_File_Input ti_http_folder {
             label {Root directory:}
-            protected xywh {135 135 240 35}
+            protected xywh {135 80 240 35}
           }
           Fl_Button btn_http_folder {
             label Select
-            protected xywh {375 135 60 35}
+            protected xywh {375 80 60 35}
           }
           Fl_Value_Input vi_http_threads {
             label {Threads:}
-            protected xywh {135 220 90 30}
+            protected xywh {135 130 90 30}
           }
           Fl_Check_Button chb_http_ssl {
             label {Use SSL}
-            protected xywh {360 220 25 25} down_box DOWN_BOX
+            protected xywh {360 130 25 25} down_box DOWN_BOX
           }
           Fl_File_Input ti_http_certificate {
             label {Certificate:}
-            protected xywh {135 260 240 35} deactivate
+            protected xywh {135 170 240 35} deactivate
           }
           Fl_Button btn_http_certificate {
             label Select
-            protected xywh {375 260 60 35} deactivate
+            protected xywh {375 170 60 35} deactivate
           }
           Fl_File_Input ti_http_certkey {
             label {Key:}
-            protected xywh {135 310 240 35} deactivate resizable
+            protected xywh {135 220 240 35} deactivate resizable
           }
           Fl_Button btn_http_certkey {
             label Select
-            protected xywh {375 310 60 35} deactivate
+            protected xywh {375 220 60 35} deactivate
           }
           Fl_Return_Button btn_http_start {
             label Start
-            protected xywh {155 380 180 30}
+            protected xywh {155 265 180 30}
+          }
+          Fl_Text_Editor te_http_rcv {
+            label {Request Received:}
+            protected xywh {40 330 410 175} deactivate
           }
         }
         Fl_Group {} {

@@ -12,6 +12,7 @@
 #include <FL/Fl_File_Chooser.H>
 #include <FL/Fl_PNG_Image.H>
 #include <Blob.h>
+#include <ostream>
 
 using namespace giri;
 
@@ -85,6 +86,9 @@ View::View(){
     m_WSS_SND = new Fl_Text_Buffer();
     te_wss_snd->buffer(m_WSS_SND);
 
+    m_HTTP_RCV = new Fl_Text_Buffer();
+    te_http_rcv->buffer(m_HTTP_RCV);
+
     win_main->show();
 }
 void View::update(giri::WebSocketServer::SPtr srv){
@@ -101,6 +105,16 @@ void View::update(giri::WebSocketSession::SPtr sess){
 }
 void View::update(giri::WebSocketClient::SPtr clnt){
     m_WSC_RCV->text(clnt->getMessage().c_str());
+    win_main->redraw();
+    Fl::check();
+}
+void View::update(giri::HTTPServer::SPtr serv){
+    serv->getSession()->subscribe(this->shared_from_this());
+}
+void View::update(giri::HTTPSession::SPtr sess){
+    std::ostringstream ostr;
+    ostr <<  sess->getRequest();
+    m_HTTP_RCV->text(ostr.str().c_str());
     win_main->redraw();
     Fl::check();
 }
@@ -142,8 +156,10 @@ void View::btn_http_start_cb(Fl_Button* btn, void* view)
         std::string cert = me->ti_http_certificate->value();
         std::string key = me->ti_http_certkey->value();
         me->m_HTTPS = std::make_shared<HTTPServer>(addr, port, rootdir, threads, ssl, cert, key);
+        me->m_HTTPS->subscribe(me->shared_from_this());
         me->m_HTTPS->run();
 
+        me->te_http_rcv->activate();
         me->ti_http_certificate->deactivate();
         me->ti_http_certkey->deactivate();
         me->btn_http_certificate->deactivate();

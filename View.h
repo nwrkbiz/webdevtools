@@ -20,6 +20,8 @@ class View : public ViewFluid,
              public giri::Observer<giri::WebSocketServer>, 
              public giri::Observer<giri::WebSocketClient>,
              public giri::Observer<giri::WebSocketSession>,
+             public giri::Observer<giri::HTTPServer>,
+             public giri::Observer<giri::HTTPSession>,
              public std::enable_shared_from_this<View>
 {
 public:
@@ -35,7 +37,9 @@ private:
     void update(giri::WebSocketServer::SPtr srv);
     void update(giri::WebSocketSession::SPtr sess);
     void update(giri::WebSocketClient::SPtr clnt);
-
+    void update(giri::HTTPServer::SPtr serv);
+    void update(giri::HTTPSession::SPtr sess);
+    
     std::string getFolder();
     std::string getFile();
 
@@ -64,6 +68,7 @@ private:
     Fl_Text_Buffer* m_WSS_RCV;
     Fl_Text_Buffer* m_WSC_SND;
     Fl_Text_Buffer* m_WSC_RCV;
+    Fl_Text_Buffer* m_HTTP_RCV;
 
     std::mutex m_SendMtx;
     std::condition_variable m_Send;
