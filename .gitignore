@@ -1,0 +1,4 @@
+*.o
+web_tools.*
+3rdParty
+.vscode

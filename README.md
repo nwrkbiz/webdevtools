@@ -18,6 +18,10 @@ Releases are avaiable for many CPU architectures and completely statically linke
 
 This program depends on Boost (tested with version 67), OpenSSL, [giri's c++ supportlib](https://github.com/nwrkbiz/Cpp-SupportLibrary), fltk and requires an C++17 compliant compiler.
 
+### Build dependencies
+
+To build all dependencies for static linking i use a set of Makefiles published here: https://github.com/nwrkbiz/static-build.
+
 ## License
 
 "THE BEER-WARE LICENSE" (Revision 42):
