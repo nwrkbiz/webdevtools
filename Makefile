@@ -1,7 +1,7 @@
 export PATH:=3rdParty/linux_armhf_musl/bin:3rdParty/linux_x86_64_musl/bin:3rdParty/linux_i686_musl/bin:3rdParty/linux_mips_musl/bin:3rdParty/linux_mipsel_musl/bin:3rdParty/linux_ppc_musl/bin:$(PATH)
 CPP=main.cpp View.cpp ViewFluid.cpp
 NAME=web_tools
-PARAMS=-static -O3 -std=c++17 -g0 -static -lboost_system -lboost_iostreams -lssl -lcrypto -lstdc++fs -lfltk -lfltk_images -lpng -lfreetype -lz -lpthread -latomic -lm
+PARAMS=-static -O3 -std=c++17 -g0 -s -static -lboost_system -lboost_iostreams -lssl -lcrypto -lstdc++fs -lfltk -lfltk_images -lpng -lfreetype -lz -lpthread -latomic -lm
 PARAMS_LINUX=$(PARAMS) -lXinerama -lXft  -lXrender -lXfixes -lXext -lX11 -lxcb -lXau -lXdmcp -lrt -ldl 
 PARAMS_WINDOWS=$(PARAMS) -DWIN32 -D_WIN32 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -mwindows -lole32 -luuid -lcomctl32 -lwsock32 -lws2_32 -lksuser -lwinmm -lcrypt32
 
